@@ -16,11 +16,11 @@ let MODE = "&mode=json"
 let LATITUDE = "lat="
 let LONGITUDE = "&lon="
 let APP_ID = "&appid="
-let API_KEY = "07ee4a40f4292a05f73ab5bd156277ed"
+let API_KEY = "31b66328ad18dc8c9695260b6be951e4"
 
 typealias DownloadComplete = () -> ()
 
-let CURRENT_WEATHER_URL = "\(BASE_URL)\(CURRENT_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(APP_ID)\(API_KEY)"
+//var CURRENT_WEATHER_URL = "\(BASE_URL)\(CURRENT_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(APP_ID)\(API_KEY)"
 
-let FORECAST_WEATHER_URL = "\(BASE_URL)\(FORECAST_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(NUMBER_OF_DAYS)\(MODE)\(APP_ID)\(API_KEY)"
+//var FORECAST_WEATHER_URL = "\(BASE_URL)\(FORECAST_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(NUMBER_OF_DAYS)\(MODE)\(APP_ID)\(API_KEY)"
 

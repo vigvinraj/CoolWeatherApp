@@ -15,9 +15,7 @@ class Location {
     
     var latitude:Double!
     var longitude:Double!
-    
-    
-    
-    
+    var CURRENT_WEATHER_URL:String!
+    var FORECAST_WEATHER_URL:String!
     
 }

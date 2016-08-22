@@ -20,12 +20,15 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     @IBOutlet weak var tableView: UITableView!
     
     
+    
+
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation!
     
     var currentWeather: CurrentWeather!
     var forecast:Forecast!
     var forecasts = [Forecast]()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +38,19 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startMonitoringSignificantLocationChanges()
-        
+        locationManager.startUpdatingLocation()
         currentWeather = CurrentWeather()
+
         
-        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if currentLocation.coordinate.latitude != locationManager.location?.coordinate.latitude && currentLocation.coordinate.longitude != locationManager.location?.coordinate.longitude {
+            print(locationManager.location)
+            currentLocation = locationManager.location
+            forecasts.removeAll()
+            locationAuthStatus()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,7 +66,11 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
             Location.sharedInstance.longitude = currentLocation.coordinate.longitude
             print(Location.sharedInstance.longitude,Location.sharedInstance.latitude)
             print(currentLocation.coordinate.latitude,currentLocation.coordinate.longitude)
-            print(CURRENT_WEATHER_URL)
+            
+            Location.sharedInstance.CURRENT_WEATHER_URL = "\(BASE_URL)\(CURRENT_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(APP_ID)\(API_KEY)"
+            Location.sharedInstance.FORECAST_WEATHER_URL = "\(BASE_URL)\(FORECAST_WEATHER)\(LATITUDE)\(Location.sharedInstance.latitude!)\(LONGITUDE)\(Location.sharedInstance.longitude!)\(NUMBER_OF_DAYS)\(MODE)\(APP_ID)\(API_KEY)"
+            print(Location.sharedInstance.CURRENT_WEATHER_URL)
+            print(Location.sharedInstance.FORECAST_WEATHER_URL)
             currentWeather.downloadWeatherDetails {
                 self.downloadForecastData {
                     self.updateMainUI()
@@ -72,7 +88,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     
     func downloadForecastData(completed: DownloadComplete) {
         //Downloading forecast weather data for TableView
-        let forecastURL = URL(string: FORECAST_WEATHER_URL)!
+        let forecastURL = URL(string: Location.sharedInstance.FORECAST_WEATHER_URL)!
         Alamofire.request(forecastURL, withMethod: .get).responseJSON { response in
             
             let result = response.result
